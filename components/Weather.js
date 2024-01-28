@@ -1,8 +1,16 @@
-import { View, Text, StyleSheet, Animated, Image, Easing } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  Image,
+  Easing,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { iconList } from "../helper/IconList";
 import { API_KEY } from "../helper/WeatherAPI";
-import { TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 
 export default function Weather({ changeTextTheme, cityName, codeName }) {
   const city = cityName;

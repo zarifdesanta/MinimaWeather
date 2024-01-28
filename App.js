@@ -2,8 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
   StyleSheet,
-  Text,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -12,8 +10,10 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import LightIcon from "./assets/openweathermap/01d.svg";
 import DarkIcon from "./assets/openweathermap/01n.svg";
 
+import LocationModal from "./components/LocationModal";
 import Weather from "./components/Weather";
 import { setData, getData } from "./helper/SaveLoad";
+import { colors } from "./helper/ColorPalette";
 
 //filled
 //map-marker, map-marker-question
@@ -31,7 +31,7 @@ export default function App() {
   };
 
   const changeTextTheme = () => {
-    return isDark ? styles.darkText : styles.lightText;
+    return isDark ? styles.lightText : styles.darkText;
   };
 
   const changeStatusBarTheme = () => {
@@ -40,9 +40,9 @@ export default function App() {
 
   const changeThemeIconBtn = () => {
     if (isDark) {
-      return <Icon name="weather-sunny" size={25} color="#f3f3f3"></Icon>;
+      return <Icon name="weather-sunny" size={25} color={colors.light}></Icon>;
     } else {
-      return <Icon name="weather-night" size={25} color="#241f2f"></Icon>;
+      return <Icon name="weather-night" size={25} color={colors.dark}></Icon>;
     }
   };
 
@@ -56,17 +56,17 @@ export default function App() {
 
   const changeColor = () => {
     if (isDark) {
-      return "#f3f3f3";
+      return colors.light;
     } else {
-      return "#241f2f";
+      return colors.dark;
     }
   };
 
   const changeColorReverse = () => {
     if (!isDark) {
-      return "#f3f3f3";
+      return colors.light;
     } else {
-      return "#241f2f";
+      return colors.dark;
     }
   };
 
@@ -103,71 +103,19 @@ export default function App() {
     hideModal();
   };
 
-  const modalComponent = () => {
+  const handleLocationModalComponent = () => {
     if (visible) {
       return (
-        <View
-          style={[
-            styles.modalContainer,
-            changeContainerTheme(),
-            { borderColor: changeColor() },
-          ]}
-        >
-          <Text style={[styles.text, changeTextTheme()]}>CITY</Text>
-          <TextInput
-            onChangeText={(text) => handleCityName(text)}
-            placeholder="e.g. dhaka, toronto..."
-            placeholderTextColor="gray"
-            style={[
-              {
-                backgroundColor: changeColor(),
-                color: changeColorReverse(),
-                borderRadius: 10,
-                fontSize: 20,
-                padding: 3,
-                fontFamily: "monospace",
-              },
-            ]}
-          ></TextInput>
-          <Text style={[styles.text, changeTextTheme()]}>CODE</Text>
-          <TextInput
-            onChangeText={(text) => handleCodeName(text)}
-            placeholder="e.g. BD, CA..."
-            placeholderTextColor="gray"
-            style={[
-              {
-                backgroundColor: changeColor(),
-                color: changeColorReverse(),
-                borderRadius: 10,
-                fontSize: 20,
-                padding: 3,
-                fontFamily: "monospace",
-              },
-            ]}
-          ></TextInput>
-          <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-            <TouchableOpacity
-              onPress={hideModal}
-              style={{ alignSelf: "center" }}
-            >
-              <Icon
-                name="close-circle"
-                size={40}
-                style={changeTextTheme()}
-              ></Icon>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleSubmit()}
-              style={{ alignSelf: "center" }}
-            >
-              <Icon
-                name="chevron-right-circle"
-                size={40}
-                style={changeTextTheme()}
-              ></Icon>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <LocationModal
+          changeContainerTheme={changeContainerTheme}
+          changeColor={changeColor}
+          changeColorReverse={changeColorReverse}
+          changeTextTheme={changeTextTheme}
+          handleCityName={handleCityName}
+          handleCodeName={handleCodeName}
+          handleSubmit={handleSubmit}
+          hideModal={hideModal}
+        ></LocationModal>
       );
     } else {
       return null;
@@ -192,6 +140,7 @@ export default function App() {
       <View style={[styles.container, changeContainerTheme()]}>
         <StatusBar style={changeStatusBarTheme()} />
 
+        {/**Top bar */}
         <View style={styles.topBarContainer}>
           <TouchableOpacity
             style={styles.topBarItem}
@@ -211,8 +160,10 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        {modalComponent()}
+        {/**Location modal handler */}
+        {handleLocationModalComponent()}
 
+        {/**Weather component */}
         <Weather
           changeTextTheme={changeTextTheme}
           cityName={city}
@@ -229,16 +180,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   darkContainer: {
-    backgroundColor: "#241F2F",
+    backgroundColor: colors.dark,
   },
   lightContainer: {
-    backgroundColor: "#F3F3F3",
-  },
-  lightText: {
-    color: "#241F2F",
+    backgroundColor: colors.light,
   },
   darkText: {
-    color: "#F3F3F3",
+    color: colors.dark,
+  },
+  lightText: {
+    color: colors.light,
   },
   text: {
     fontFamily: "monospace",
@@ -260,15 +211,5 @@ const styles = StyleSheet.create({
   topBarItem: {
     marginLeft: 2.5,
     marginRight: 2.5,
-  },
-  modalContainer: {
-    position: "absolute",
-    top: "50%",
-    zIndex: 200,
-    width: "80%",
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-    gap: 5,
   },
 });

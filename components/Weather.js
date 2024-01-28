@@ -10,10 +10,19 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
   const changeWeatherIcon = () => {
     let iconNameFromOWM =
       weatherData["weather"] && weatherData["weather"][0]["icon"];
-    //console.log(iconNameFromOWM);
-    //console.log(weatherData);
-    //console.log(location + "hi");
-    //console.log(weatherData["name"]);
+
+    for (let i = 0; i < iconList.length; i++) {
+      if (iconList[i].name == iconNameFromOWM) {
+        const Icon = iconList[i].icon;
+        return <Icon width={300} height={300}></Icon>;
+      }
+    }
+  };
+
+  const changeWeatherIcon_Backup = () => {
+    let iconNameFromOWM =
+      weatherData["weather"] && weatherData["weather"][0]["icon"];
+
     for (let i = 0; i < iconList.length; i++) {
       if (iconList[i].name == iconNameFromOWM) {
         const Icon = iconList[i].icon;

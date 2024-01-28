@@ -115,6 +115,7 @@ export default function App() {
           handleCodeName={handleCodeName}
           handleSubmit={handleSubmit}
           hideModal={hideModal}
+          visible={visible}
         ></LocationModal>
       );
     } else {
@@ -133,44 +134,39 @@ export default function App() {
   }, []);
 
   return (
-    <TouchableWithoutFeedback
-      onPress={hideModal}
-      style={[styles.container, changeContainerTheme()]}
-    >
-      <View style={[styles.container, changeContainerTheme()]}>
-        <StatusBar style={changeStatusBarTheme()} />
+    <View style={[styles.container, changeContainerTheme()]}>
+      <StatusBar style={changeStatusBarTheme()} />
 
-        {/**Top bar */}
-        <View style={styles.topBarContainer}>
-          <TouchableOpacity
-            style={styles.topBarItem}
-            onPress={() => setVisible(!visible)}
-          >
-            <Icon
-              name="map-marker-outline"
-              size={25}
-              style={changeTextTheme()}
-            ></Icon>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.topBarItem}
-            onPress={() => changeTheme()}
-          >
-            {changeThemeIconBtn()}
-          </TouchableOpacity>
-        </View>
-
-        {/**Location modal handler */}
-        {handleLocationModalComponent()}
-
-        {/**Weather component */}
-        <Weather
-          changeTextTheme={changeTextTheme}
-          cityName={city}
-          codeName={code}
-        ></Weather>
+      {/**Top bar */}
+      <View style={styles.topBarContainer}>
+        <TouchableOpacity
+          style={styles.topBarItem}
+          onPress={() => setVisible(!visible)}
+        >
+          <Icon
+            name="map-marker-outline"
+            size={25}
+            style={changeTextTheme()}
+          ></Icon>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.topBarItem}
+          onPress={() => changeTheme()}
+        >
+          {changeThemeIconBtn()}
+        </TouchableOpacity>
       </View>
-    </TouchableWithoutFeedback>
+
+      {/**Location modal handler */}
+      {handleLocationModalComponent()}
+
+      {/**Weather component */}
+      <Weather
+        changeTextTheme={changeTextTheme}
+        cityName={city}
+        codeName={code}
+      ></Weather>
+    </View>
   );
 }
 

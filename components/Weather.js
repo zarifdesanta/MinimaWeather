@@ -3,10 +3,7 @@ import {
   Text,
   StyleSheet,
   Animated,
-  Image,
-  Easing,
   TouchableOpacity,
-  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { iconList } from "../helper/IconList";
@@ -19,17 +16,33 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
   const [weatherData, setWeatherData] = useState([]);
 
   const translation = useRef(new Animated.Value(0)).current;
+  const rotation = useRef(new Animated.Value(0)).current;
 
   const animateWeatherIconOnPress = () => {
     Animated.sequence([
       Animated.timing(translation, {
-        toValue: -10,
-        duration: 300,
+        toValue: -20,
+        duration: 150,
         useNativeDriver: true,
       }),
       Animated.timing(translation, {
         toValue: 0,
-        duration: 300,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const animateRotationWeatherIconOnStart = () => {
+    Animated.sequence([
+      Animated.timing(rotation, {
+        toValue: 360,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(rotation, {
+        toValue: 0,
+        duration: 400,
         useNativeDriver: true,
       }),
     ]).start();
@@ -49,6 +62,18 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
                 transform: [
                   {
                     translateY: translation,
+                  },
+                  {
+                    scale: translation.interpolate({
+                      inputRange: [0, 10],
+                      outputRange: [1, 1.1],
+                    }),
+                  },
+                  {
+                    rotate: rotation.interpolate({
+                      inputRange: [0, 360],
+                      outputRange: ["0deg", "360deg"],
+                    }),
                   },
                 ],
               }}
@@ -99,6 +124,7 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
         .then((res) => res.json())
         .then((res) => setWeatherData(res))
         .catch((err) => console.log(err));
+      animateRotationWeatherIconOnStart();
     }
 
     fetchWeatherData();

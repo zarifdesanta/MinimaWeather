@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState, useCallback } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import * as NavigationBar from "expo-navigation-bar";
 
 import LocationModal from "./components/LocationModal";
 import Weather from "./components/Weather";
@@ -107,6 +108,16 @@ export default function App() {
       return null;
     }
   };
+
+  useEffect(() => {
+    async function setNavBarBgColor() {
+      NavigationBar.setBackgroundColorAsync(
+        isDark ? colors.dark : colors.light
+      );
+    }
+
+    setNavBarBgColor();
+  }, [isDark]);
 
   useEffect(() => {
     async function getAllData() {

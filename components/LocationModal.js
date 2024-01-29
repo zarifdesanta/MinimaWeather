@@ -47,7 +47,7 @@ export default function LocationModal({
           style={[
             styles.modalContainer,
             changeContainerTheme(),
-            { borderColor: changeColor() },
+            { borderColor: changeColor(), elevation: 15 },
           ]}
         >
           <Text style={[styles.text, changeTextTheme()]}>CITY</Text>

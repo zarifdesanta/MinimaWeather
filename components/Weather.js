@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { iconList } from "../helper/IconList";
@@ -59,7 +61,7 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
         const Icon = iconList[i].icon;
 
         return (
-          <TouchableOpacity onPress={() => animateWeatherIconOnPress()}>
+          <TouchableWithoutFeedback onPress={() => animateWeatherIconOnPress()}>
             <Animated.View
               style={{
                 transform: [
@@ -83,7 +85,7 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
             >
               <Icon width={300} height={300}></Icon>
             </Animated.View>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         );
       }
     }
@@ -147,7 +149,11 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
 
   return (
     <ScrollView
-      contentContainerStyle={{ flex: 1, alignItems: "center" }}
+      contentContainerStyle={{
+        flex: 1,
+        alignItems: "center",
+        width: Dimensions.get("window").width,
+      }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }

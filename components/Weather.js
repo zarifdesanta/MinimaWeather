@@ -4,8 +4,10 @@ import {
   StyleSheet,
   Animated,
   TouchableOpacity,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { iconList } from "../helper/IconList";
 import { API_KEY } from "../helper/WeatherAPI";
 
@@ -55,6 +57,7 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
     for (let i = 0; i < iconList.length; i++) {
       if (iconList[i].name == iconNameFromOWM) {
         const Icon = iconList[i].icon;
+
         return (
           <TouchableOpacity onPress={() => animateWeatherIconOnPress()}>
             <Animated.View
@@ -87,6 +90,7 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
   };
 
   const getTemperature = () => {
+    //console.log(weatherData);
     return (
       weatherData["main"] && (weatherData["main"]["temp"] - 273).toFixed(2)
     );
@@ -132,8 +136,22 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
     //console.log(weatherData);
   }, [city, code]);
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
   return (
-    <React.Fragment>
+    <ScrollView
+      contentContainerStyle={{ flex: 1, alignItems: "center" }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={styles.loc_container}>
         <Text style={[styles.text, changeTextTheme(), styles.loc_text]}>
           {getCityName()}, {getCountryName()}
@@ -162,7 +180,7 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
       >
         Feels Like {getFeelsLike()}&deg;C
       </Text>
-    </React.Fragment>
+    </ScrollView>
   );
 }
 

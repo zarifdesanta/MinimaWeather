@@ -1,9 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import LightIcon from "./assets/openweathermap/01d.svg";
-import DarkIcon from "./assets/openweathermap/01n.svg";
 
 import LocationModal from "./components/LocationModal";
 import Weather from "./components/Weather";
@@ -38,14 +36,6 @@ export default function App() {
       return <Icon name="weather-sunny" size={25} color={colors.light}></Icon>;
     } else {
       return <Icon name="weather-night" size={25} color={colors.dark}></Icon>;
-    }
-  };
-
-  const changeThemeIconBtn_Backup = () => {
-    if (isDark) {
-      return <LightIcon width={30} height={30}></LightIcon>;
-    } else {
-      return <DarkIcon width={30} height={30}></DarkIcon>;
     }
   };
 

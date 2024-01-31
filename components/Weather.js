@@ -95,7 +95,7 @@ export default function Weather({ changeTextTheme, cityName = "", codeName }) {
   const getTemperature = () => {
     //console.log(weatherData);
     return (
-      weatherData["main"] && (weatherData["main"]["temp"] - 273).toFixed(2)
+      weatherData["main"] && (weatherData["main"]["temp"] - 273).toFixed(0)
     );
   };
 
@@ -106,7 +106,7 @@ export default function Weather({ changeTextTheme, cityName = "", codeName }) {
   const getFeelsLike = () => {
     return (
       weatherData["main"] &&
-      (weatherData["main"]["feels_like"] - 273).toFixed(2)
+      (weatherData["main"]["feels_like"] - 273).toFixed(0)
     );
   };
 

@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
   },
   topBarItem: {
-    paddingLeft: 8,
-    paddingRight: 8,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });

@@ -10,10 +10,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { iconList } from "../helper/IconList";
 import { API_KEY } from "../helper/WeatherAPI";
 
-export default function Weather({ changeTextTheme, cityName, codeName }) {
+export default function Weather({ changeTextTheme, cityName = "", codeName }) {
   const city = cityName;
   const code = codeName;
 
@@ -117,9 +118,64 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
     return weatherData["sys"] && weatherData["sys"]["country"];
   };
 
+  const handleNullLocationView = () => {
+    if (!weatherData["message"] && city != "") {
+      return (
+        <>
+          <View style={styles.loc_container}>
+            <Text style={[styles.text, changeTextTheme(), styles.loc_text]}>
+              {getCityName()}, {getCountryName()}
+            </Text>
+
+            <Text
+              style={[
+                styles.text,
+                { fontSize: 15, alignSelf: "center" },
+                changeTextTheme(),
+              ]}
+            >
+              {getCondition()}
+            </Text>
+          </View>
+          <View style={styles.weat_cond_icon_container}>
+            {changeWeatherIcon()}
+          </View>
+
+          <Text style={[styles.text, changeTextTheme(), styles.weat_text]}>
+            {getTemperature()}&deg;C
+          </Text>
+          <Text
+            style={[
+              styles.text,
+              changeTextTheme(),
+              { fontSize: 15, alignSelf: "center" },
+            ]}
+          >
+            Feels Like {getFeelsLike()}&deg;C
+          </Text>
+        </>
+      );
+    } else {
+      return (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Icon
+            name="map-marker-outline"
+            size={22}
+            style={changeTextTheme()}
+          ></Icon>
+          <Text style={[styles.text, changeTextTheme(), { fontSize: 15 }]}>
+            Please Set A Location{" "}
+          </Text>
+        </View>
+      );
+    }
+  };
+
   useEffect(() => {
     async function fetchWeatherData() {
-      await fetch(
+      fetch(
         "https://api.openweathermap.org/data/2.5/weather?q=" +
           city +
           "," +
@@ -130,12 +186,13 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
         .then((res) => res.json())
         .then((res) => setWeatherData(res))
         .catch((err) => console.log(err));
+
       animateRotationWeatherIconOnStart();
     }
 
     fetchWeatherData();
 
-    //console.log(weatherData);
+    // console.log(weatherData);
   }, [city, code]);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -158,34 +215,7 @@ export default function Weather({ changeTextTheme, cityName, codeName }) {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View style={styles.loc_container}>
-        <Text style={[styles.text, changeTextTheme(), styles.loc_text]}>
-          {getCityName()}, {getCountryName()}
-        </Text>
-
-        <Text
-          style={[
-            styles.text,
-            { fontSize: 15, alignSelf: "center" },
-            changeTextTheme(),
-          ]}
-        >
-          {getCondition()}
-        </Text>
-      </View>
-      <View style={styles.weat_cond_icon_container}>{changeWeatherIcon()}</View>
-      <Text style={[styles.text, changeTextTheme(), styles.weat_text]}>
-        {getTemperature()}&deg;C
-      </Text>
-      <Text
-        style={[
-          styles.text,
-          changeTextTheme(),
-          { fontSize: 15, alignSelf: "center" },
-        ]}
-      >
-        Feels Like {getFeelsLike()}&deg;C
-      </Text>
+      {handleNullLocationView()}
     </ScrollView>
   );
 }

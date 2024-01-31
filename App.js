@@ -73,7 +73,7 @@ export default function App() {
     name: "",
     code: "",
   };
-  const handleCityName = (name) => {
+  const handleCityName = (name = "") => {
     location.name = name;
   };
   const handleCodeName = (code) => {
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
   },
   topBarItem: {
-    marginLeft: 2.5,
-    marginRight: 2.5,
+    paddingLeft: 8,
+    paddingRight: 8,
   },
 });

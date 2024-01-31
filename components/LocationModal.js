@@ -91,7 +91,7 @@ export default function LocationModal({
             >
               <Icon
                 name="close-circle"
-                size={40}
+                size={45}
                 style={changeTextTheme()}
               ></Icon>
             </TouchableOpacity>
@@ -101,7 +101,7 @@ export default function LocationModal({
             >
               <Icon
                 name="chevron-right-circle"
-                size={40}
+                size={45}
                 style={changeTextTheme()}
               ></Icon>
             </TouchableOpacity>
